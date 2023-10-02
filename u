@@ -514,7 +514,7 @@ do
 	end
 
 	local highlight = Instance.new("Highlight")
-	highlight.FillColor = Color3.new(0,255,0)
+	highlight.FillColor = Color3.new(0,0,255)
 	QuarryLeftBox:AddToggle('AutoMineQuarry', {
 		Text = 'Auto Mine Quarry',
 		Default = false,
@@ -535,7 +535,6 @@ do
 							else
 								break
 							end
-							task.wait()
 						until not ore or not ore.Parent or not Toggles.AutoMineQuarry.Value
 					end)
 					if ore:FindFirstChild("Health") then
