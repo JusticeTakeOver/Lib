@@ -654,22 +654,6 @@ do
 	})
 
 
-	QuarryLeftBox:AddInput('PriorTextBox', {
-		Default = 'Titanium',
-		Numeric = false,
-		Finished = false,
-
-		Text = 'Priority',
-		Tooltip = 'Enter The Ores You Want To Prioritize',
-
-		Placeholder = 'e.g Sulphur, Titanium',
-
-		Callback = function(value)
-print(value)
-		end
-	})
-
-
 
 function getNextOre()
 	local ores = {}
