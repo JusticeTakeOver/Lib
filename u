@@ -369,18 +369,15 @@ local MiningRightBox = Tabs.Mining:AddRightGroupbox('Crafting')
 do
 
 	local ores = {}
-	local oresToInclude = {}
 	local function getOreList()
 		local stringOreList = {}
 
 		local oreList = {}
 		local sortedOres = {}
 
-		for _, ore in next, ReplicatedStorage.OresPrices:GetChildren() do
-			if table.contains(oresToInclude, ore.Name) then
-				oreList[ore.Name] = ore.Value
-				table.insert(stringOreList, ore.Name)
-			end
+		for _,ore in next, ReplicatedStorage.OresPrices:GetChildren() do
+			oreList[ore.Name] = ore.Value
+			table.insert(stringOreList, ore.Name)
 		end
 
 		for oreName, _ in pairs(oreList) do
@@ -652,7 +649,22 @@ do
 			ores = {}
 		end
 	})
+	
+	QuarryLeftBox:AddInput('DepthTextbox', {
+		Default = '100',
+		Numeric = true, 
+		Finished = false, 
 
+		Text = 'Depth',
+		Tooltip = 'The depth to mine at!',
+
+		Placeholder = 'e.g 100',
+
+		Callback = function(value)
+			getgenv().hellothere = tonumber(value)
+		end
+	})
+end
 
 
 function getNextOre()
@@ -704,7 +716,7 @@ MiningLeftBox:AddToggle('AutoMine', {
 		end
 	end
 })
-end
+
 
 
 do 
