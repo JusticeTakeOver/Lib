@@ -7,6 +7,9 @@ local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
 local player = game:GetService("Players").LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local events = ReplicatedStorage:WaitForChild("Events")
+local PlayerF = game:GetService("Players")
+local playerman = PlayerF.LocalPlayer
+local runeData = playerman.PlayerGui.GameGui.RuneFrame.Content.OpenRunes.RuneData
 
 for _,v in next, getconnections(player.Idled) do 
 	v:Disable()
@@ -319,6 +322,63 @@ FactoryLeftBox:AddToggle("RebirthUpgrades", {
 				end
 			end
 		end
+	end
+})
+
+-- Function to check if an ImageLabel's URL matches the specified URL and Bonus value is greater than the specified value
+local function checkRune(imageURL, minBonusValue, frame)
+	local imageLabel = frame:FindFirstChildWhichIsA("ImageLabel")
+	local bonusLabel = frame:FindFirstChild("Bonus")
+	if imageLabel and bonusLabel and imageLabel:IsA("ImageLabel") and bonusLabel:IsA("TextLabel") then
+		if imageLabel.Image == imageURL then
+			local bonusText = bonusLabel.Text
+			local bonusValue = tonumber(bonusText:gsub(",", ""):sub(1, -2)) -- Remove commas and extract numeric part
+			if bonusValue and bonusValue > minBonusValue then
+				return true
+			end
+		end
+	end
+	return false
+end
+
+-- Function to continuously check runes and perform the action
+local function checkAndDeleteRune()
+	wait() -- Wait for a short interval before checking again
+
+	local found = false
+
+	-- Check runes for specified conditions
+	for _, frame in pairs(runeData:GetChildren()) do
+		if frame:IsA("Frame") then
+			if checkRune("http://www.roblox.com/asset/?id=14116726000", 12, frame) or
+				checkRune("http://www.roblox.com/asset/?id=14116234166", 8000, frame) then
+				found = true
+				break
+			end
+		end
+	end
+
+	-- If no match is found, perform the action
+	if not found then
+		local args = {
+			[1] = 100
+		}
+
+		game:GetService("ReplicatedStorage").Events.BuyRune.DeleteRune:FireServer(unpack(args))
+	end
+end
+
+
+FactoryLeftBox:AddToggle("AutoRuneDelete", {
+	Text = "Auto Rune Delete",
+	Default = false,
+	Tooltip = "Purchase Rebirth Upgrades",
+
+	Callback = function(value)
+		while Toggles.AutoRuneDelete.Value do 
+			wait(.1)
+			checkAndDeleteRune()
+			end
 	end
 })
 
