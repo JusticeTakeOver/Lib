@@ -158,6 +158,31 @@ TreeLeftBox:AddToggle('CollectTree', {
 	end
 })
 
+TreeLeftBox:AddToggle('CollectTreeOV', {
+	Text = 'Collect Tree Money (Other Version)',
+	Default = false, 
+	Tooltip = 'Auto Collect Tree Money',
+
+	Callback = function(Value)
+		while Toggles.CollectTreeOV.Value do 
+			wait() 
+			local playerHead = game.Players.LocalPlayer.Character.Head
+			local tree1 = game:GetService("Workspace").Factory.TreeObjects
+
+			-- Check if Gem1 exists
+			if tree1 then
+				for _, v in pairs(tree1:GetDescendants()) do
+					if v.Name == "TouchInterest" and v.Parent then
+						firetouchinterest(game:GetService('Players').LocalPlayer.Character.HumanoidRootPart, v.Parent, 0)
+					end
+				end
+			else
+				warn("Damn Ok")
+			end
+		end
+	end
+})
+
 local function shouldPrestigeTree()
 	local gain = string.gsub(string.gsub(game:GetService("Workspace").PrestigeBoard.SurfaceGui.About.PrestigeFrame.PowderGain.Text, "+", ""), ",", "")
 	local unabbreviatedGain = 0
@@ -709,67 +734,67 @@ MiningLeftBox:AddToggle('AutoMineOther', {
 
 	Callback = function(Value)
 		while Toggles.AutoMineOther.Value do 
-				task.wait()
-				local Workspace = game:GetService("Workspace")
-				local ReplicatedStorage = game:GetService("ReplicatedStorage")
+			task.wait()
+			local Workspace = game:GetService("Workspace")
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-				local oreParts = Workspace.Ores:GetChildren()
-				local localPlayer = game:GetService("Players").LocalPlayer
-				local mineTier = localPlayer.Stats.MineTier.Value
+			local oreParts = Workspace.Ores:GetChildren()
+			local localPlayer = game:GetService("Players").LocalPlayer
+			local mineTier = localPlayer.Stats.MineTier.Value
 
-				if #oreParts == 0 then
-					wait(.25) -- Wait for a brief moment before checking again
-				else
-					local targetBrickColor = BrickColor.new("Plum") -- Color to ignore
+			if #oreParts == 0 then
+				wait(.25) -- Wait for a brief moment before checking again
+			else
+				local targetBrickColor = BrickColor.new("Plum") -- Color to ignore
 
-					local nonPlumOreFound = false
-					local prioritizedOrePart = nil
+				local nonPlumOreFound = false
+				local prioritizedOrePart = nil
 
-					for _, orePart in pairs(oreParts) do
-						if orePart.BrickColor ~= targetBrickColor then
-							nonPlumOreFound = true
-							prioritizedOrePart = orePart
-							break
-						end
+				for _, orePart in pairs(oreParts) do
+					if orePart.BrickColor ~= targetBrickColor then
+						nonPlumOreFound = true
+						prioritizedOrePart = orePart
+						break
 					end
-
-					if nonPlumOreFound then
-						local partName = prioritizedOrePart.Name
-						local oreNumber = tonumber(partName)
-
-						if oreNumber then
-							local args = {
-								[1] = oreNumber
-							}
-
-							local MineOreEvent = ReplicatedStorage.Events.MineOre
-							local success, result = pcall(function()
-								MineOreEvent:FireServer(unpack(args))
-							end)
-
-							if success and result == true then
-								prioritizedOrePart:Destroy()
-							else
-								-- Handle mining failure
-							end
-						end
-					else
-						-- All ores are "Plum"
-						local EnterMineTierEvent = ReplicatedStorage.Events.EnterMineTier
-						local initialMineTier = mineTier
-						local args = {
-							[1] = math.max(mineTier - 1, 1)
-						}
-						EnterMineTierEvent:FireServer(unpack(args))
-						wait(1) -- Wait for 1 second before firing the next remote
-
-						args[1] = math.max(initialMineTier, 1) -- Use the initial mineTier value
-						EnterMineTierEvent:FireServer(unpack(args))
-						wait(1)
-					end
-
 				end
+
+				if nonPlumOreFound then
+					local partName = prioritizedOrePart.Name
+					local oreNumber = tonumber(partName)
+
+					if oreNumber then
+						local args = {
+							[1] = oreNumber
+						}
+
+						local MineOreEvent = ReplicatedStorage.Events.MineOre
+						local success, result = pcall(function()
+							MineOreEvent:FireServer(unpack(args))
+						end)
+
+						if success and result == true then
+							prioritizedOrePart:Destroy()
+						else
+							-- Handle mining failure
+						end
+					end
+				else
+					-- All ores are "Plum"
+					local EnterMineTierEvent = ReplicatedStorage.Events.EnterMineTier
+					local initialMineTier = mineTier
+					local args = {
+						[1] = math.max(mineTier - 1, 1)
+					}
+					EnterMineTierEvent:FireServer(unpack(args))
+					wait(1) -- Wait for 1 second before firing the next remote
+
+					args[1] = math.max(initialMineTier, 1) -- Use the initial mineTier value
+					EnterMineTierEvent:FireServer(unpack(args))
+					wait(1)
+				end
+
 			end
+		end
 	end
 })
 
