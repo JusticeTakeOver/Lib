@@ -649,21 +649,6 @@ do
 			ores = {}
 		end
 	})
-	
-	QuarryLeftBox:AddInput('DepthTextbox', {
-		Default = '100',
-		Numeric = true, 
-		Finished = false, 
-
-		Text = 'Depth',
-		Tooltip = 'The depth to mine at!',
-
-		Placeholder = 'e.g 100',
-
-		Callback = function(value)
-			getgenv().hellothere = tonumber(value)
-		end
-	})
 end
 
 
