@@ -53,6 +53,7 @@ end
 local FactoryLeftBox = Tabs.Factory:AddLeftGroupbox('Clicking')
 local FactoryRightBox = Tabs.Factory:AddRightGroupbox('Factory Upgrades')
 local TreeLeftBox = Tabs.Factory:AddRightGroupbox('Tree')
+local RuneLeftBox = Tabs.Factory:AddLeftGroupbox('Runes')
 
 FactoryLeftBox:AddToggle('BoostMachines', {
 	Text = 'Boost Machines',
@@ -373,7 +374,7 @@ local function checkAndDeleteRune()
 end
 
 
-FactoryLeftBox:AddToggle("AutoRuneDelete", {
+RuneLeftBox:AddToggle("AutoRuneDelete", {
 	Text = "Auto Rune Delete",
 	Default = false,
 	Tooltip = "Purchase Rebirth Upgrades",
@@ -387,22 +388,22 @@ FactoryLeftBox:AddToggle("AutoRuneDelete", {
 })
 
 
-FactoryLeftBox:AddInput('PickaxeDmgText', {
-	Default = '12',
+RuneLeftBox:AddInput('PickaxeDmgText', {
+	Default = '7000',
 	Numeric = true, 
 	Finished = false, 
 
 	Text = 'Desired Pickaxe Damage',
 	Tooltip = "Auto Rune Delete Wont Delete Pickaxe Ores With This Value",
 
-	Placeholder = 'e.g 12',
+	Placeholder = 'e.g 7000',
 
 	Callback = function(value)
 		getgenv().DesiredPickDmg = tonumber(value)
 	end
 })
 
-FactoryLeftBox:AddInput('StoneDmgText', {
+RuneLeftBox:AddInput('StoneDmgText', {
 	Default = '7000',
 	Numeric = true, 
 	Finished = false, 
@@ -882,11 +883,11 @@ MiningLeftBox:AddToggle('AutoMineOther', {
 						[1] = math.max(mineTier - 1, 1)
 					}
 					EnterMineTierEvent:FireServer(unpack(args))
-					wait(.1) -- Wait for 1 second before firing the next remote
+					wait(.3) -- Wait for 1 second before firing the next remote
 
 					args[1] = math.max(initialMineTier, 1) -- Use the initial mineTier value
 					EnterMineTierEvent:FireServer(unpack(args))
-					wait(.1)
+					wait(.3)
 				end
 
 			end
