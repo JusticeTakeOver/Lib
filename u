@@ -341,6 +341,10 @@ local function checkRune(imageURL, minBonusValue, frame)
 	return false
 end
 
+
+getgenv().DesiredPickDmg = 12
+getgenv().DesiredStoneDmg = 7000
+
 -- Function to continuously check runes and perform the action
 local function checkAndDeleteRune()
 	wait() -- Wait for a short interval before checking again
@@ -350,8 +354,8 @@ local function checkAndDeleteRune()
 	-- Check runes for specified conditions
 	for _, frame in pairs(runeData:GetChildren()) do
 		if frame:IsA("Frame") then
-			if checkRune("http://www.roblox.com/asset/?id=14116726000", 12, frame) or
-				checkRune("http://www.roblox.com/asset/?id=14116234166", 8000, frame) then
+			if checkRune("http://www.roblox.com/asset/?id=14116726000", getgenv().DesiredPickDmg, frame) or
+				checkRune("http://www.roblox.com/asset/?id=14116234166", getgenv().DesiredStoneDmg, frame) then
 				found = true
 				break
 			end
@@ -378,9 +382,41 @@ FactoryLeftBox:AddToggle("AutoRuneDelete", {
 		while Toggles.AutoRuneDelete.Value do 
 			wait(.1)
 			checkAndDeleteRune()
-			end
+		end
 	end
 })
+
+
+FactoryLeftBox:AddInput('PickaxeDmgText', {
+	Default = '7000',
+	Numeric = true, 
+	Finished = false, 
+
+	Text = 'Desired Pickaxe Damage',
+	Tooltip = "Auto Rune Delete Wont Delete Pickaxe Ores With This Value",
+
+	Placeholder = 'e.g 7000',
+
+	Callback = function(value)
+		getgenv().DesiredPickDmg = tonumber(value)
+	end
+})
+
+FactoryLeftBox:AddInput('StoneDmgText', {
+	Default = '7000',
+	Numeric = true, 
+	Finished = false, 
+
+	Text = 'Desired Stone',
+	Tooltip = "Auto Rune Delete Wont Delete Stone Ores With This Value",
+
+	Placeholder = 'e.g 7000',
+
+	Callback = function(value)
+		getgenv().DesiredStoneDmg = tonumber(value)
+	end
+})
+
 
 local factoryUpgradeLimits = {
 	[1] = 20,
