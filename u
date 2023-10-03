@@ -388,14 +388,14 @@ FactoryLeftBox:AddToggle("AutoRuneDelete", {
 
 
 FactoryLeftBox:AddInput('PickaxeDmgText', {
-	Default = '7000',
+	Default = '12',
 	Numeric = true, 
 	Finished = false, 
 
 	Text = 'Desired Pickaxe Damage',
 	Tooltip = "Auto Rune Delete Wont Delete Pickaxe Ores With This Value",
 
-	Placeholder = 'e.g 7000',
+	Placeholder = 'e.g 12',
 
 	Callback = function(value)
 		getgenv().DesiredPickDmg = tonumber(value)
