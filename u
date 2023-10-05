@@ -699,7 +699,7 @@ do
 
 		Callback = function(value)
 			while Toggles.MineQuarOV.Value do 
-				wait(.3) 
+				wait(.5) 
 				local Players = game:GetService("Players")
 				local ReplicatedStorage = game:GetService("ReplicatedStorage")
 				local LocalPlayer = Players.LocalPlayer
