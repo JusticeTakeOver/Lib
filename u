@@ -690,6 +690,67 @@ do
 			end
 		end
 	})
+	
+	
+	QuarryLeftBox:AddToggle("MineQuarOV", {
+		Text = 'Mine Quarry (No TP)',
+		Default = false,
+		Tooltip = 'Auto Mines Ores Around You Within 30 Studs',
+
+		Callback = function(value)
+			while Toggles.MineQuarOV.Value do 
+				wait() 
+				local Players = game:GetService("Players")
+				local ReplicatedStorage = game:GetService("ReplicatedStorage")
+				local LocalPlayer = Players.LocalPlayer
+				local MineChunks = game.Workspace.MineChunks -- Change to your specific folder
+				local MineRemote = ReplicatedStorage.Events.Mine
+
+				-- Function to calculate the distance between two vectors
+				local function CalculateDistance(point1, point2)
+					return (point1 - point2).Magnitude
+				end
+
+				-- Function to randomly mine parts within the MineChunks folder within a specified range
+				local function RandomlyMineParts(folder, maxDistance)
+					local partsToMine = {}
+
+					local localPlayerPosition = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+					if not localPlayerPosition then
+						return
+					end
+
+					for _, child in ipairs(folder:GetDescendants()) do
+						if child:IsA("BasePart") then
+							local partPosition = child.Position
+							local distance = CalculateDistance(partPosition, localPlayerPosition.Position)
+
+							if distance <= maxDistance then
+								table.insert(partsToMine, child)
+							end
+						end
+					end
+
+					if #partsToMine > 0 then
+						local randomIndex = math.random(1, #partsToMine)
+						local randomPart = partsToMine[randomIndex]
+
+						-- Fire the remote for the randomly selected part
+						local args = {
+							[1] = randomPart,
+						}
+						MineRemote:FireServer(unpack(args))
+					end
+				end
+
+				-- Set the maximum distance (e.g., 300 studs)
+				local maxDistance = 30
+
+				-- Call the function to randomly mine a part from the MineChunks folder within the specified range
+				RandomlyMineParts(MineChunks, maxDistance)
+			end
+		end
+	})
 
 
 	local prioritySlider
