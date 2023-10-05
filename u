@@ -699,7 +699,7 @@ do
 
 		Callback = function(value)
 			while Toggles.MineQuarOV.Value do 
-				wait() 
+				wait(.3) 
 				local Players = game:GetService("Players")
 				local ReplicatedStorage = game:GetService("ReplicatedStorage")
 				local LocalPlayer = Players.LocalPlayer
@@ -744,7 +744,7 @@ do
 				end
 
 				-- Set the maximum distance (e.g., 300 studs)
-				local maxDistance = 30
+				local maxDistance = 7
 
 				-- Call the function to randomly mine a part from the MineChunks folder within the specified range
 				RandomlyMineParts(MineChunks, maxDistance)
