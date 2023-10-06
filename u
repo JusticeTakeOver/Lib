@@ -690,8 +690,8 @@ do
 			end
 		end
 	})
-	
-	
+
+
 	QuarryLeftBox:AddToggle("MineQuarOV", {
 		Text = 'Mine Quarry (No TP)',
 		Default = false,
@@ -955,6 +955,68 @@ MiningLeftBox:AddToggle('AutoMineOther', {
 		end
 	end
 })
+
+
+
+MiningLeftBox:AddToggle('AutoMinePlumOres', {
+	Text = 'Auto Mine (Plum Ores)',
+	Default = false,
+	Tooltip = 'Auto Mines Plum Ores',
+
+	Callback = function(Value)
+		while Toggles.AutoMinePlumOres.Value do 
+			task.wait()
+			local Workspace = game:GetService("Workspace")
+			local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+			local oreParts = Workspace.Ores:GetChildren()
+			local localPlayer = game:GetService("Players").LocalPlayer
+
+			if #oreParts == 0 then
+				wait(.25) -- Wait for a brief moment before checking again
+			else
+				local targetBrickColor = BrickColor.new("Medium blue")
+
+				local plumOreFound = false
+				local prioritizedOrePart = nil
+
+				for _, orePart in pairs(oreParts) do
+					if orePart.BrickColor == targetBrickColor then
+						plumOreFound = true
+						prioritizedOrePart = orePart
+						break
+					end
+				end
+
+				if plumOreFound then
+					local partName = prioritizedOrePart.Name
+					local oreNumber = tonumber(partName)
+
+					if oreNumber then
+						local args = {
+							[1] = oreNumber
+						}
+
+						local MineOreEvent = ReplicatedStorage.Events.MineOre
+						local success, result = pcall(function()
+							MineOreEvent:FireServer(unpack(args))
+						end)
+
+						if success and result == true then
+							prioritizedOrePart:Destroy()
+						else
+							-- Handle mining failure
+						end
+					end
+				else
+					-- No Plum ores found
+					-- You might want to add some logic here if necessary
+				end
+			end
+		end
+	end
+})
+
 
 
 
