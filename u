@@ -936,6 +936,7 @@ MiningLeftBox:AddToggle('AutoMineOther', {
 							-- Handle mining failure
 						end
 					end
+					wait(1)
 				else
 					-- All ores are "Plum"
 					local EnterMineTierEvent = ReplicatedStorage.Events.EnterMineTier
