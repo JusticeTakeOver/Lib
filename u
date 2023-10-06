@@ -959,9 +959,9 @@ MiningLeftBox:AddToggle('AutoMineOther', {
 
 
 MiningLeftBox:AddToggle('AutoMinePlumOres', {
-	Text = 'Auto Mine (Plum Ores)',
+	Text = 'Auto Mine (Normal Diamond Ores)',
 	Default = false,
-	Tooltip = 'Auto Mines Plum Ores',
+	Tooltip = 'Auto Mines Normal Diamonds',
 
 	Callback = function(Value)
 		while Toggles.AutoMinePlumOres.Value do 
