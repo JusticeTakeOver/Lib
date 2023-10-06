@@ -944,11 +944,11 @@ MiningLeftBox:AddToggle('AutoMineOther', {
 						[1] = math.max(mineTier - 1, 1)
 					}
 					EnterMineTierEvent:FireServer(unpack(args))
-					wait(.3) -- Wait for 1 second before firing the next remote
+					wait() -- Wait for 1 second before firing the next remote
 
 					args[1] = math.max(initialMineTier, 1) -- Use the initial mineTier value
 					EnterMineTierEvent:FireServer(unpack(args))
-					wait(.3)
+					wait()
 				end
 
 			end
