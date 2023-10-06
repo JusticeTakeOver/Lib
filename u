@@ -958,13 +958,13 @@ MiningLeftBox:AddToggle('AutoMineOther', {
 
 
 
-MiningLeftBox:AddToggle('AutoMinePlumOres', {
-	Text = 'Auto Mine (Normal Diamond Ores)',
+MiningLeftBox:AddToggle('AutoMineNormalD', {
+	Text = 'Auto Mine (Normal Diamonds)',
 	Default = false,
-	Tooltip = 'Auto Mines Normal Diamonds',
+	Tooltip = 'Auto Mines',
 
 	Callback = function(Value)
-		while Toggles.AutoMinePlumOres.Value do 
+		while Toggles.AutoMineNormalD.Value do
 			task.wait()
 			local Workspace = game:GetService("Workspace")
 			local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -973,24 +973,20 @@ MiningLeftBox:AddToggle('AutoMinePlumOres', {
 			local localPlayer = game:GetService("Players").LocalPlayer
 			local mineTier = localPlayer.Stats.MineTier.Value
 
-
 			if #oreParts == 0 then
 				wait(.25) -- Wait for a brief moment before checking again
 			else
-				local targetBrickColor = BrickColor.new("Medium blue")
-
-				local plumOreFound = false
+				local targetBrickColor = BrickColor.new("Medium blue") -- Color to look for
 				local prioritizedOrePart = nil
 
 				for _, orePart in pairs(oreParts) do
 					if orePart.BrickColor == targetBrickColor then
-						plumOreFound = true
 						prioritizedOrePart = orePart
 						break
 					end
 				end
 
-				if plumOreFound then
+				if prioritizedOrePart then
 					local partName = prioritizedOrePart.Name
 					local oreNumber = tonumber(partName)
 
@@ -1011,23 +1007,24 @@ MiningLeftBox:AddToggle('AutoMinePlumOres', {
 						end
 					end
 				else
-					-- All ores are "Plum"
+					-- No "Medium blue" ores found
 					local EnterMineTierEvent = ReplicatedStorage.Events.EnterMineTier
 					local initialMineTier = mineTier
 					local args = {
 						[1] = math.max(mineTier - 1, 1)
 					}
 					EnterMineTierEvent:FireServer(unpack(args))
-					wait(.15) -- Wait for 1 second before firing the next remote
+					wait(.15) -- Wait for 0.15 seconds before firing the next remote
 
 					args[1] = math.max(initialMineTier, 1) -- Use the initial mineTier value
 					EnterMineTierEvent:FireServer(unpack(args))
-					wait(.15)
+					wait(.15) -- Wait for 0.15 seconds
 				end
 			end
 		end
 	end
 })
+
 
 
 
