@@ -971,6 +971,8 @@ MiningLeftBox:AddToggle('AutoMinePlumOres', {
 
 			local oreParts = Workspace.Ores:GetChildren()
 			local localPlayer = game:GetService("Players").LocalPlayer
+			local mineTier = localPlayer.Stats.MineTier.Value
+
 
 			if #oreParts == 0 then
 				wait(.25) -- Wait for a brief moment before checking again
@@ -1009,8 +1011,18 @@ MiningLeftBox:AddToggle('AutoMinePlumOres', {
 						end
 					end
 				else
-					-- No Plum ores found
-					-- You might want to add some logic here if necessary
+					-- All ores are "Plum"
+					local EnterMineTierEvent = ReplicatedStorage.Events.EnterMineTier
+					local initialMineTier = mineTier
+					local args = {
+						[1] = math.max(mineTier - 1, 1)
+					}
+					EnterMineTierEvent:FireServer(unpack(args))
+					wait(.15) -- Wait for 1 second before firing the next remote
+
+					args[1] = math.max(initialMineTier, 1) -- Use the initial mineTier value
+					EnterMineTierEvent:FireServer(unpack(args))
+					wait(.15)
 				end
 			end
 		end
