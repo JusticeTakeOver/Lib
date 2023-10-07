@@ -375,10 +375,23 @@ local function checkAndDeleteRune()
 end
 
 
+RuneLeftBox:AddToggle("AutoRuneBuy", {
+	Text = "Auto Buy Rune",
+	Default = false,
+	Tooltip = "Auto Buys Rune",
+
+	Callback = function(value)
+		while Toggles.AutoRuneBuy.Value do 
+			wait()
+			game:GetService("ReplicatedStorage").Events.BuyRune:FireServer(16)
+		end
+	end
+})
+
 RuneLeftBox:AddToggle("AutoRuneDelete", {
 	Text = "Auto Rune Delete",
 	Default = false,
-	Tooltip = "Purchase Rebirth Upgrades",
+	Tooltip = "Deletes Rune",
 
 	Callback = function(value)
 		while Toggles.AutoRuneDelete.Value do 
