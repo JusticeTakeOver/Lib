@@ -382,7 +382,7 @@ RuneLeftBox:AddToggle("AutoRuneBuy", {
 
 	Callback = function(value)
 		while Toggles.AutoRuneBuy.Value do 
-			wait()
+			wait(.1)
 			game:GetService("ReplicatedStorage").Events.BuyRune:FireServer(16)
 		end
 	end
