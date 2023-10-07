@@ -345,6 +345,7 @@ end
 
 getgenv().DesiredPickDmg = 12
 getgenv().DesiredStoneDmg = 7000
+getgenv().DesiredRuneSlot = 100
 
 -- Function to continuously check runes and perform the action
 local function checkAndDeleteRune()
@@ -366,7 +367,7 @@ local function checkAndDeleteRune()
 	-- If no match is found, perform the action
 	if not found then
 		local args = {
-			[1] = 100
+			[1] = getgenv().DesiredRuneSlot
 		}
 
 		game:GetService("ReplicatedStorage").Events.BuyRune.DeleteRune:FireServer(unpack(args))
@@ -389,14 +390,14 @@ RuneLeftBox:AddToggle("AutoRuneDelete", {
 
 
 RuneLeftBox:AddInput('PickaxeDmgText', {
-	Default = '7000',
+	Default = '72',
 	Numeric = true, 
 	Finished = false, 
 
 	Text = 'Desired Pickaxe Damage',
 	Tooltip = "Auto Rune Delete Wont Delete Pickaxe Ores With This Value",
 
-	Placeholder = 'e.g 7000',
+	Placeholder = 'e.g 72',
 
 	Callback = function(value)
 		getgenv().DesiredPickDmg = tonumber(value)
@@ -415,6 +416,22 @@ RuneLeftBox:AddInput('StoneDmgText', {
 
 	Callback = function(value)
 		getgenv().DesiredStoneDmg = tonumber(value)
+	end
+})
+
+
+RuneLeftBox:AddInput('RuneSlotText', {
+	Default = '100',
+	Numeric = true, 
+	Finished = false, 
+
+	Text = 'Desired Stone',
+	Tooltip = "The Rune Slot To Be Deleted",
+
+	Placeholder = 'e.g 100',
+
+	Callback = function(value)
+		getgenv().DesiredRuneSlot = tonumber(value)
 	end
 })
 
