@@ -327,11 +327,6 @@ FactoryLeftBox:AddToggle("RebirthUpgrades", {
 })
 
 -- Function to check if an ImageLabel's URL matches the specified URL and Bonus value is greater than the specified value
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local runeData = player.PlayerGui.GameGui.RuneFrame.Content.OpenRunes.RuneData
-
--- Function to check if an ImageLabel's URL matches the specified URL and Bonus value is greater than the specified value
 local function checkRune(imageURL, minBonusValue, frame)
 	local imageLabel = frame:FindFirstChildWhichIsA("ImageLabel")
 	local bonusLabel = frame:FindFirstChild("Bonus")
@@ -347,15 +342,22 @@ local function checkRune(imageURL, minBonusValue, frame)
 	return false
 end
 
--- Function to handle X key press
+
+getgenv().DesiredPickDmg = 12
+getgenv().DesiredStoneDmg = 7000
+getgenv().DesiredRuneSlot = 100
+
+-- Function to continuously check runes and perform the action
 local function checkAndDeleteRune()
+	wait() -- Wait for a short interval before checking again
+
 	local found = false
 
-	-- Check runes for X key with first set of conditions
+	-- Check runes for specified conditions
 	for _, frame in pairs(runeData:GetChildren()) do
 		if frame:IsA("Frame") then
 			if checkRune("http://www.roblox.com/asset/?id=14116726000", getgenv().DesiredPickDmg, frame) or
-				checkRune("http://www.roblox.com/asset/?id=14116234166", getgenv().DesiredPickDmg, frame) then
+				checkRune("http://www.roblox.com/asset/?id=14116234166", getgenv().DesiredStoneDmg, frame) then
 				found = true
 				break
 			end
@@ -365,7 +367,7 @@ local function checkAndDeleteRune()
 	-- If no match is found, perform the action
 	if not found then
 		local args = {
-			[1] = 100
+			[1] = getgenv().DesiredRuneSlot
 		}
 
 		game:GetService("ReplicatedStorage").Events.BuyRune.DeleteRune:FireServer(unpack(args))
@@ -373,9 +375,31 @@ local function checkAndDeleteRune()
 end
 
 
+RuneLeftBox:AddToggle("AutoRuneDelete", {
+	Text = "Auto Rune Delete",
+	Default = false,
+	Tooltip = "Purchase Rebirth Upgrades",
 
+	Callback = function(value)
+		while Toggles.AutoRuneDelete.Value do 
+			wait(.1)
+			checkAndDeleteRune()
+		end
+	end
+})
 
+RuneLeftBox:AddToggle("AutoRuneOpen", {
+	Text = "Auto Open Rune",
+	Default = false,
+	Tooltip = "Auto Opens Runes",
 
+	Callback = function(value)
+		while Toggles.AutoRuneOpen.Value do 
+			wait(.1)
+			game:GetService("ReplicatedStorage").Events.BuyRune:FireServer(16)
+		end
+	end
+})
 
 
 RuneLeftBox:AddInput('PickaxeDmgText', {
@@ -404,7 +428,7 @@ RuneLeftBox:AddInput('StoneDmgText', {
 	Placeholder = 'e.g 7000',
 
 	Callback = function(value)
-		getgenv().DesiredStoneDmg = value
+		getgenv().DesiredStoneDmg = tonumber(value)
 	end
 })
 
@@ -414,57 +438,16 @@ RuneLeftBox:AddInput('RuneSlotText', {
 	Numeric = true, 
 	Finished = false, 
 
-	Text = 'Desired Rune Slot',
+	Text = 'Desired Stone',
 	Tooltip = "The Rune Slot To Be Deleted",
 
 	Placeholder = 'e.g 100',
 
 	Callback = function(value)
-		getgenv().DesiredRuneSlot = value
+		getgenv().DesiredRuneSlot = tonumber(value)
 	end
 })
 
-
-RuneLeftBox:AddInput('DesiredGemsText', {
-	Default = '5300',
-	Numeric = true, 
-	Finished = false, 
-
-	Text = 'Desired Gem Rune',
-	Tooltip = "Desired Gems",
-
-	Placeholder = 'e.g 5300',
-
-	Callback = function(value)
-		getgenv().DesiredGems = value
-	end
-})
-
-RuneLeftBox:AddToggle("AutoRuneOpen", {
-	Text = "Auto Open Rune",
-	Default = false,
-	Tooltip = "Auto Opens Runes",
-
-	Callback = function(value)
-		while Toggles.AutoRuneOpen.Value do 
-			wait(.1)
-			game:GetService("ReplicatedStorage").Events.BuyRune:FireServer(16)
-		end
-	end
-})
-
-RuneLeftBox:AddToggle("AutoRuneDelete", {
-	Text = "Auto Rune Delete [Updated]",
-	Default = false,
-	Tooltip = "Purchase Rebirth Upgrades",
-
-	Callback = function(value)
-		while Toggles.AutoRuneDelete.Value do 
-			wait(.1)
-			checkAndDeleteRune()
-		end
-	end
-})
 
 local factoryUpgradeLimits = {
 	[1] = 20,
