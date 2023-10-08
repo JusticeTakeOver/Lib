@@ -346,6 +346,7 @@ end
 getgenv().DesiredPickDmg = 12
 getgenv().DesiredStoneDmg = 7000
 getgenv().DesiredRuneSlot = 100
+getgenv().DesiredGems = 5300
 
 -- Function to continuously check runes and perform the action
 local function checkAndDeleteRune()
@@ -357,7 +358,8 @@ local function checkAndDeleteRune()
 	for _, frame in pairs(runeData:GetChildren()) do
 		if frame:IsA("Frame") then
 			if checkRune("http://www.roblox.com/asset/?id=14116726000", getgenv().DesiredPickDmg, frame) or
-				checkRune("http://www.roblox.com/asset/?id=14116234166", getgenv().DesiredStoneDmg, frame) then
+				checkRune("http://www.roblox.com/asset/?id=14116234166", getgenv().DesiredStoneDmg, frame) or
+				checkRune("http://www.roblox.com/asset/?id=14084410895", getgenv().DesiredGems, frame) then
 				found = true
 				break
 			end
@@ -375,23 +377,10 @@ local function checkAndDeleteRune()
 end
 
 
-RuneLeftBox:AddToggle("AutoRuneBuy", {
-	Text = "Auto Buy Rune",
-	Default = false,
-	Tooltip = "Auto Buys Rune",
-
-	Callback = function(value)
-		while Toggles.AutoRuneBuy.Value do 
-			wait(.1)
-			game:GetService("ReplicatedStorage").Events.BuyRune:FireServer(16)
-		end
-	end
-})
-
 RuneLeftBox:AddToggle("AutoRuneDelete", {
 	Text = "Auto Rune Delete",
 	Default = false,
-	Tooltip = "Deletes Rune",
+	Tooltip = "Purchase Rebirth Upgrades",
 
 	Callback = function(value)
 		while Toggles.AutoRuneDelete.Value do 
@@ -438,13 +427,29 @@ RuneLeftBox:AddInput('RuneSlotText', {
 	Numeric = true, 
 	Finished = false, 
 
-	Text = 'Desired Stone',
+	Text = 'Desired Rune Slot',
 	Tooltip = "The Rune Slot To Be Deleted",
 
 	Placeholder = 'e.g 100',
 
 	Callback = function(value)
 		getgenv().DesiredRuneSlot = tonumber(value)
+	end
+})
+
+
+RuneLeftBox:AddInput('DesiredGemsText', {
+	Default = '5300',
+	Numeric = true, 
+	Finished = false, 
+
+	Text = 'Desired Gem Rune',
+	Tooltip = "Desired Gems",
+
+	Placeholder = 'e.g 5300',
+
+	Callback = function(value)
+		getgenv().DesiredGems = tonumber(value)
 	end
 })
 
