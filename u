@@ -346,7 +346,7 @@ end
 getgenv().DesiredPickDmg = 12
 getgenv().DesiredStoneDmg = 7000
 getgenv().DesiredRuneSlot = 100
-getgenv().DesiredGems = 5300
+getgenv().DesiredGems = 5500
 
 -- Function to continuously check runes and perform the action
 local function checkAndDeleteRune()
@@ -376,6 +376,19 @@ local function checkAndDeleteRune()
 	end
 end
 
+
+RuneLeftBox:AddToggle("AutoRuneOpen", {
+	Text = "Auto Open Rune",
+	Default = false,
+	Tooltip = "Auto Opens Runes",
+
+	Callback = function(value)
+		while Toggles.AutoRuneOpen.Value do 
+			wait(.1)
+			game:GetService("ReplicatedStorage").Events.BuyRune:FireServer(16)
+		end
+	end
+})
 
 RuneLeftBox:AddToggle("AutoRuneDelete", {
 	Text = "Auto Rune Delete",
