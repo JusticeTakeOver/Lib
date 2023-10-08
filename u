@@ -327,6 +327,11 @@ FactoryLeftBox:AddToggle("RebirthUpgrades", {
 })
 
 -- Function to check if an ImageLabel's URL matches the specified URL and Bonus value is greater than the specified value
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local runeData = player.PlayerGui.GameGui.RuneFrame.Content.OpenRunes.RuneData
+
+-- Function to check if an ImageLabel's URL matches the specified URL and Bonus value is greater than the specified value
 local function checkRune(imageURL, minBonusValue, frame)
 	local imageLabel = frame:FindFirstChildWhichIsA("ImageLabel")
 	local bonusLabel = frame:FindFirstChild("Bonus")
@@ -342,40 +347,31 @@ local function checkRune(imageURL, minBonusValue, frame)
 	return false
 end
 
-
--- Function to continuously check runes and perform the action
+-- Function to handle X key press
 local function checkAndDeleteRune()
-	wait() -- Wait for a short interval before checking again
-
 	local found = false
 
-	-- Get the most up-to-date Desired values
-	local desiredPickDmg = getgenv().DesiredPickDmg
-	local desiredStoneDmg = getgenv().DesiredStoneDmg
-	local desiredRuneSlot = getgenv().DesiredRuneSlot
-	local desiredGems = getgenv().DesiredGems
-
-	-- Check runes for specified conditions
+	-- Check runes for X key with first set of conditions
 	for _, frame in pairs(runeData:GetChildren()) do
 		if frame:IsA("Frame") then
-			if checkRune("http://www.roblox.com/asset/?id=14116726000", desiredPickDmg, frame) or
-				checkRune("http://www.roblox.com/asset/?id=14116234166", desiredStoneDmg, frame) or
-				checkRune("http://www.roblox.com/asset/?id=14084410895", desiredGems, frame) then
+			if checkRune("http://www.roblox.com/asset/?id=14116726000", getgenv().DesiredPickDmg, frame) or
+				checkRune("http://www.roblox.com/asset/?id=14116234166", getgenv().DesiredPickDmg, frame) then
 				found = true
 				break
 			end
 		end
 	end
 
-	wait()
+	-- If no match is found, perform the action
 	if not found then
 		local args = {
-			[1] = desiredRuneSlot
+			[1] = 100
 		}
 
 		game:GetService("ReplicatedStorage").Events.BuyRune.DeleteRune:FireServer(unpack(args))
 	end
 end
+
 
 
 
@@ -408,7 +404,7 @@ RuneLeftBox:AddInput('StoneDmgText', {
 	Placeholder = 'e.g 7000',
 
 	Callback = function(value)
-		getgenv().DesiredStoneDmg = tonumber(value)
+		getgenv().DesiredStoneDmg = value
 	end
 })
 
@@ -424,7 +420,7 @@ RuneLeftBox:AddInput('RuneSlotText', {
 	Placeholder = 'e.g 100',
 
 	Callback = function(value)
-		getgenv().DesiredRuneSlot = tonumber(value)
+		getgenv().DesiredRuneSlot = value
 	end
 })
 
@@ -440,7 +436,7 @@ RuneLeftBox:AddInput('DesiredGemsText', {
 	Placeholder = 'e.g 5300',
 
 	Callback = function(value)
-		getgenv().DesiredGems = tonumber(value)
+		getgenv().DesiredGems = value
 	end
 })
 
@@ -458,7 +454,7 @@ RuneLeftBox:AddToggle("AutoRuneOpen", {
 })
 
 RuneLeftBox:AddToggle("AutoRuneDelete", {
-	Text = "Auto Rune Delete",
+	Text = "Auto Rune Delete [Updated]",
 	Default = false,
 	Tooltip = "Purchase Rebirth Upgrades",
 
