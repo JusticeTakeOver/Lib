@@ -343,8 +343,8 @@ local function checkRune(imageURL, minBonusValue, frame)
 end
 
 
-getgenv().DesiredPickDmg = 12
-getgenv().DesiredStoneDmg = 7000
+getgenv().DesiredPickDmg = 0
+getgenv().DesiredStoneDmg = 0
 getgenv().DesiredRuneSlot = 100
 
 -- Function to continuously check runes and perform the action
