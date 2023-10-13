@@ -344,7 +344,7 @@ end
 
 
 getgenv().DesiredPickDmg = 0
-getgenv().DesiredStoneDmg = 0
+getgenv().DesiredEnergyDmg = 0
 getgenv().DesiredRuneSlot = 100
 
 -- Function to continuously check runes and perform the action
@@ -357,7 +357,7 @@ local function checkAndDeleteRune()
 	for _, frame in pairs(runeData:GetChildren()) do
 		if frame:IsA("Frame") then
 			if checkRune("http://www.roblox.com/asset/?id=14116726000", getgenv().DesiredPickDmg, frame) or
-				checkRune("http://www.roblox.com/asset/?id=14116234166", getgenv().DesiredStoneDmg, frame) then
+				checkRune("http://www.roblox.com/asset/?id=14258912743", getgenv().DesiredEnergyDmg, frame) then
 				found = true
 				break
 			end
@@ -422,13 +422,13 @@ RuneLeftBox:AddInput('StoneDmgText', {
 	Numeric = true, 
 	Finished = false, 
 
-	Text = 'Desired Stone',
+	Text = 'Desired Energy',
 	Tooltip = "Auto Rune Delete Wont Delete Stone Ores With This Value",
 
 	Placeholder = 'e.g 7000',
 
 	Callback = function(value)
-		getgenv().DesiredStoneDmg = tonumber(value)
+		getgenv().DesiredEnergyDmg = tonumber(value)
 	end
 })
 
