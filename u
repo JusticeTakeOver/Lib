@@ -357,7 +357,7 @@ local function checkAndDeleteRune()
 	for _, frame in pairs(runeData:GetChildren()) do
 		if frame:IsA("Frame") then
 			if checkRune("http://www.roblox.com/asset/?id=14116726000", getgenv().DesiredPickDmg, frame) or
-				checkRune("http://www.roblox.com/asset/?id=14258912743", getgenv().DesiredEnergyDmg, frame) then
+				checkRune("http://www.roblox.com/asset/?id=14084410895", getgenv().DesiredEnergyDmg, frame) then
 				found = true
 				break
 			end
@@ -422,7 +422,7 @@ RuneLeftBox:AddInput('StoneDmgText', {
 	Numeric = true, 
 	Finished = false, 
 
-	Text = 'Desired Energy',
+	Text = 'Desired Gems',
 	Tooltip = "Auto Rune Delete Wont Delete Stone Ores With This Value",
 
 	Placeholder = 'e.g 7000',
@@ -555,6 +555,10 @@ do
 		return priorityOres, priorityOresStrings, amount
 	end
 	local oreList, stringOreList, totalOres = getOreList()
+	
+	
+
+
 
 
 	local function getDepth(position)
